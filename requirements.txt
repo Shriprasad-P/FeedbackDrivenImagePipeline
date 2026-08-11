@@ -1,0 +1,4 @@
+streamlit>=1.38
+requests>=2.32
+Pillow>=10.4
+huggingface_hub>=0.24
