@@ -5,7 +5,7 @@ import io
 import json
 import os
 import random
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from http.server import BaseHTTPRequestHandler, HTTPServer
 
 from mflux.models.z_image import ZImageTurbo
 
@@ -73,4 +73,4 @@ class Handler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     print(f"MFLUX image endpoint listening at http://{HOST}:{PORT}/generate", flush=True)
-    ThreadingHTTPServer((HOST, PORT), Handler).serve_forever()
+    HTTPServer((HOST, PORT), Handler).serve_forever()
