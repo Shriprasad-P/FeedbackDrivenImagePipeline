@@ -238,7 +238,7 @@ if run:
     try:
         with st.status("Running feedback loop…", expanded=True) as status:
             st.write("Enhancing prompt with Qwen3-4B…")
-            enhanced = ollama_generate(enhancer, f"Rewrite this image prompt for a high-quality generator. Return only the improved prompt.\n\n{prompt}", max_tokens=180)
+            enhanced = ollama_generate(enhancer, f"Rewrite this image prompt for a high-quality generator. Return only the improved prompt.\n\n{prompt}", max_tokens=180).strip() or prompt.strip()
             st.write("Generating with Bonsai 4B…" if image_source == "Generate a new image" else "Using uploaded image…")
             result = generate_with_bonsai(enhanced, bonsai_endpoint, source_image)
             if result is None:
@@ -254,7 +254,7 @@ if run:
                 if int(critique.get("score", 0)) >= 90 or not bonsai_endpoint:
                     break
                 st.write("Fixing defects with Qwen3-4B and regenerating…")
-                enhanced = ollama_generate(enhancer, f"Improve this image prompt using the defects below. Return only the revised prompt.\nPrompt: {enhanced}\nDefects: {critique.get('defects', critique.get('feedback', ''))}", max_tokens=180)
+                enhanced = ollama_generate(enhancer, f"Improve this image prompt using the defects below. Return only the revised prompt.\nPrompt: {enhanced}\nDefects: {critique.get('defects', critique.get('feedback', ''))}", max_tokens=180).strip() or enhanced
                 result = generate_with_bonsai(enhanced, bonsai_endpoint, result)
             st.session_state.result = result
             status.update(label="Pipeline complete", state="complete")
